@@ -21,7 +21,7 @@ namespace TweetImporter.TwitterJSON
         public string CreatedAt { get; set; }
 
         [JsonProperty("id")]
-        public double Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("id_str")]
         public string IdStr { get; set; }
@@ -112,6 +112,15 @@ namespace TweetImporter.TwitterJSON
 
         [JsonProperty("quoted_status", NullValueHandling = NullValueHandling.Ignore)]
         public TweetQuotedStatus QuotedStatus { get; set; }
+        
+        [JsonProperty("extended_tweet", NullValueHandling = NullValueHandling.Ignore)]
+        public ExtendedTweet ExtendedTweet { get; set; }
+    }
+
+    public class ExtendedTweet
+    {
+        [JsonProperty("full_text")]
+        public string FullText { get; set; }
     }
 
     public partial class TweetEntities
@@ -144,7 +153,7 @@ namespace TweetImporter.TwitterJSON
     public partial class PurpleMedia
     {
         [JsonProperty("id")]
-        public double Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("id_str")]
         public string IdStr { get; set; }
@@ -234,7 +243,7 @@ namespace TweetImporter.TwitterJSON
     public partial class User
     {
         [JsonProperty("id")]
-        public double Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("id_str")]
         public string IdStr { get; set; }

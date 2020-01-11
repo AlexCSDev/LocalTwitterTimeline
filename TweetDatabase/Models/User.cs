@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace TweetDatabase.Models
 {
@@ -7,5 +8,6 @@ namespace TweetDatabase.Models
         public long Id { get; set; }
         public string Name { get; set; }
         public string ScreenName { get; set; }
+        public List<Tweet> Tweets { get; set; }
     }
 }
