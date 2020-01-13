@@ -13,6 +13,7 @@ namespace TweetDatabase.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    OriginalId = table.Column<long>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     ScreenName = table.Column<string>(nullable: true)
                 },
@@ -27,6 +28,7 @@ namespace TweetDatabase.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    OriginalId = table.Column<long>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     ImportedAt = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<long>(nullable: false),
@@ -56,6 +58,7 @@ namespace TweetDatabase.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    OriginalId = table.Column<long>(nullable: false),
                     MediaType = table.Column<int>(nullable: false),
                     Url = table.Column<string>(nullable: true),
                     TweetId = table.Column<long>(nullable: false)

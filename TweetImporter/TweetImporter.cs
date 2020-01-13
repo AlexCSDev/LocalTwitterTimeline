@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using NLog;
 using NLog.Fluent;
@@ -18,11 +19,24 @@ namespace TweetImporter
     public class TweetImporter : ITweetImporter
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        public async Task<List<Tweet>> ImportTweets(string json)
+        //TODO: RETWEETS
+        public async Task<List<Tweet>> ImportTweets(string[] jsonLines)
         {
             _logger.Info("Started importing tweets");
+            
+            _logger.Debug("Forming valid json");
+            StringBuilder stringBuilder = new StringBuilder();
+            
+            stringBuilder.Append("[");
+            foreach (string line in jsonLines)
+            {
+                stringBuilder.Append(line);
+                stringBuilder.Append(",");
+            }
+            stringBuilder.Append("]");
+            
             _logger.Debug("Parsing json");
-            List<JSONTweet> jsonTweets = TwitterJSON.Tweet.FromJson(json);
+            List<JSONTweet> jsonTweets = TwitterJSON.Tweet.FromJson(stringBuilder.ToString());
             
             List<Tweet> returnList = new List<Tweet>();
 
@@ -34,20 +48,20 @@ namespace TweetImporter
                 foreach (JSONTweet jsonTweet in jsonTweets)
                 {
                     _logger.Debug($"Parsing user in: {jsonTweet.Id}");
-                    if (users.Any(u => u.Id == jsonTweet.User.Id))
+                    if (users.Any(u => u.OriginalId == jsonTweet.User.Id))
                     {
                         _logger.Debug($"User exists");
                         continue;
                     }
                     
-                    User user = dbContext.Users.FirstOrDefault(u => u.Id == jsonTweet.User.Id);
+                    User user = dbContext.Users.FirstOrDefault(u => u.OriginalId == jsonTweet.User.Id);
 
                     if (user == null)
                     {
                         _logger.Debug($"DB: Not found");
                         user = new User
                         {
-                            Id = jsonTweet.User.Id,
+                            OriginalId = jsonTweet.User.Id,
                             Name = jsonTweet.User.Name,
                             ScreenName = jsonTweet.User.ScreenName
                         };
@@ -62,21 +76,21 @@ namespace TweetImporter
                 foreach (JSONTweet jsonTweet in jsonTweets)
                 {
                     _logger.Debug($"Parsing {jsonTweet.Id}");
-                    if (dbContext.Tweets.Any(t => t.Id == jsonTweet.Id))
+                    if (dbContext.Tweets.Any(t => t.OriginalId == jsonTweet.Id))
                         continue;
                     
                     _logger.Debug($"Does not exist");
 
                     Tweet dbTweet = new Tweet
                     {
-                        Id = jsonTweet.Id,
+                        OriginalId = jsonTweet.Id,
                         CreatedAt = DateTime.ParseExact(jsonTweet.CreatedAt,
                             "ddd MMM dd HH:mm:ss +ffff yyyy", new System.Globalization.CultureInfo("en-US")),
                         ImportedAt = DateTime.UtcNow
                     };
 
                     _logger.Debug($"Searching for user");
-                    User user = dbContext.Users.FirstOrDefault(u => u.Id == jsonTweet.User.Id);
+                    User user = dbContext.Users.FirstOrDefault(u => u.OriginalId == jsonTweet.User.Id);
 
                     if (user == null)
                     {
@@ -110,20 +124,20 @@ namespace TweetImporter
                         _logger.Debug($"Media found");
                         foreach (PurpleMedia jsonMedia in jsonTweet.ExtendedEntities.Media)
                         {
-                            if (media.Any(m => m.Id == jsonMedia.Id))
+                            if (media.Any(m => m.OriginalId == jsonMedia.Id))
                             {
                                 _logger.Debug($"Media exists");
                                 continue;
                             }
                                 
                             _logger.Debug($"Searching for media");
-                            Media dbMedia = dbContext.Media.FirstOrDefault(m => m.Id == jsonMedia.Id);
+                            Media dbMedia = dbContext.Media.FirstOrDefault(m => m.OriginalId == jsonMedia.Id);
 
                             if (dbMedia == null)
                             {
                                     _logger.Debug($"Not Found, Creating...");
                                     _logger.Debug($"Searching tweet...");
-                                    Tweet dbTweet = dbContext.Tweets.FirstOrDefault(t => t.Id == jsonTweet.Id);
+                                    Tweet dbTweet = dbContext.Tweets.FirstOrDefault(t => t.OriginalId == jsonTweet.Id);
 
                                     if (dbTweet == null)
                                     {
@@ -133,7 +147,7 @@ namespace TweetImporter
                                     
                                     dbMedia = new Media
                                     {
-                                        Id = jsonMedia.Id,
+                                        OriginalId = jsonMedia.Id,
                                         Url = $"{jsonMedia.MediaUrlHttps.ToString()}:orig",
                                         TweetId = dbTweet.Id
                                     };

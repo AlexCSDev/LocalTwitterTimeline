@@ -9,7 +9,7 @@ using TweetDatabase;
 namespace TweetDatabase.Migrations
 {
     [DbContext(typeof(TweetDbContext))]
-    [Migration("20200111230800_InitialCreate")]
+    [Migration("20200113175837_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,9 @@ namespace TweetDatabase.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("MediaType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("OriginalId")
                         .HasColumnType("INTEGER");
 
                     b.Property<long>("TweetId")
@@ -51,6 +54,9 @@ namespace TweetDatabase.Migrations
 
                     b.Property<DateTime>("ImportedAt")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("OriginalId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<long?>("RelatedTweetId")
                         .HasColumnType("INTEGER");
@@ -79,6 +85,9 @@ namespace TweetDatabase.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("OriginalId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ScreenName")
                         .HasColumnType("TEXT");

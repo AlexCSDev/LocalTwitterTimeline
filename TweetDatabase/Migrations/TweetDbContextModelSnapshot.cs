@@ -25,6 +25,9 @@ namespace TweetDatabase.Migrations
                     b.Property<int>("MediaType")
                         .HasColumnType("INTEGER");
 
+                    b.Property<long>("OriginalId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<long>("TweetId")
                         .HasColumnType("INTEGER");
 
@@ -49,6 +52,9 @@ namespace TweetDatabase.Migrations
 
                     b.Property<DateTime>("ImportedAt")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("OriginalId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<long?>("RelatedTweetId")
                         .HasColumnType("INTEGER");
@@ -77,6 +83,9 @@ namespace TweetDatabase.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
+
+                    b.Property<long>("OriginalId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ScreenName")
                         .HasColumnType("TEXT");

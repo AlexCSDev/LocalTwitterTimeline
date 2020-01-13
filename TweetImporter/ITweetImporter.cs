@@ -6,6 +6,6 @@ namespace TweetImporter
 {
     public interface ITweetImporter
     {
-        Task<List<Tweet>> ImportTweets(string json);
+        Task<List<Tweet>> ImportTweets(string[] jsonLines);
     }
 }
