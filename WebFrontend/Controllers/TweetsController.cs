@@ -34,7 +34,7 @@ namespace WebFrontend.Controllers
                 tweets = await _dbContext.Tweets.Include(t => t.Media).Include(t => t.User)
                     //.OrderByDescending(t=>t.CreatedAt)
                     .OrderByDescending(t=>t.OriginalId)
-                    .Where(t => t.OriginalId <= (id != -1 ? id : Int64.MaxValue))
+                    .Where(t => t.OriginalId <= (id > 0 ? id : Int64.MaxValue))
                     .Take(100)
                     .AsNoTracking()
                     .ToArrayAsync();
