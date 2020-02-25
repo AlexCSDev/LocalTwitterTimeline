@@ -29,6 +29,7 @@ namespace TweetImporter
             _logger.Debug("Creating tweet parser");
             ITweetImporter tweetImporter = new TweetImporter();
             List<Tweet> tweets = await tweetImporter.ImportTweets(await File.ReadAllLinesAsync(args[0]));
+            File.Delete(args[0]);
             _logger.Info($"Imported {tweets.Count} tweets");
         }
     }

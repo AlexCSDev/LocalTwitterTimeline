@@ -13,7 +13,6 @@ export class HomeComponent {
   public tweets: Tweet[] = [];
   public cursor = "-1";
   public MediaType = MediaType;
-  //private twttr: any;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: ActivatedRoute, private router: Router, private location: Location) {
   }
@@ -42,16 +41,6 @@ export class HomeComponent {
 
   onScrollDown() {
     if (/*this.pagination.cursor !== -1*/true) { //TODO: IT RETURNS 404 if there are nothing left
-      /*this.noResults = false;
-      this.cursor = this.pagination.cursor;*/
-
-      /*const url = this
-        .router
-        .createUrlTree(['/search/', this.query, this.cursor])
-        .toString();
-
-      this.location.go(url);
-*/
       this.loadData();
     } else {
       console.log('no results');
@@ -60,7 +49,6 @@ export class HomeComponent {
   }
 
   onScrollUp() {
-    // this.page -= 1;
     console.log('scrolled up');
   }
 }
