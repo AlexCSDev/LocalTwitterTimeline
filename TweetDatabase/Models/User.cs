@@ -7,5 +7,7 @@ namespace TweetDatabase.Models
     {
         public string Name { get; set; }
         public string ScreenName { get; set; }
+
+        public string ProfileImageUrl { get; set; }
     }
 }

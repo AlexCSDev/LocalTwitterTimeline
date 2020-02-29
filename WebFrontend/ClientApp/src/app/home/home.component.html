@@ -5,17 +5,30 @@
      (scrolled)="onScrollDown()"
      (scrolledUp)="onScrollUp()">
   <div class="tweet-container" *ngFor="let tweet of tweets">
-    <p>{{tweet.user.name}} ({{tweet.user.screenName}}) | {{tweet.text}}</p>
+    <button type="button" class="btn btn-primary btn-sm" (click)="this['isCollapsed_'+tweet.id] = !this['isCollapsed_'+tweet.id]">Toggle info</button>
+    <div [ngbCollapse]="!this['isCollapsed_'+tweet.id]">
+      <p>{{tweet.id}}</p>
+      <p>{{tweet.user.name}} ({{tweet.user.screenName}}) | {{tweet.text}}</p>
+    </div>
+    <div *ngIf="tweet.isRetweet">
+      Retweeted by {{tweet.user.name}}
+    </div>
     <blockquote class="twitter-tweet">
       <article class="tweet">
         <img class="avatar" src="assets/unknown-user.png">
-        <a href="https://twitter.com/{{tweet.user.screenName}}" class="name">{{tweet.user.name}}</a><div class="twitter-icon-off" title="This tweet was deleted. This is a saved copy."></div><br>
+        <a href="https://twitter.com/{{tweet.user.screenName}}" class="name">{{tweet.user.name}}</a>
+        <div class="twitter-icon-off" title="This tweet was deleted. This is a saved copy."></div><br>
         <span class="username">{{tweet.user.name}}</span><br>
         <br>
         <div class="text">
           {{tweet.text}}
           <div class="embedimg_container">
-            <div style="display:inline;" *ngFor="let media of tweet.media"><br/><a href="{{media.url}}"><div class="embedimg_typediv">{{MediaType[media.mediaType]}}</div><img class="embedimg_image" src="{{media.url}}"/></a></div>
+            <div style="display: inline;" *ngFor="let media of tweet.media">
+              <br />
+              <a href="{{media.url}}">
+                <div class="embedimg_typediv">{{MediaType[media.mediaType]}}</div><img class="embedimg_image" src="{{media.url}}" />
+              </a>
+            </div>
           </div>
         </div>
         <footer>
@@ -24,6 +37,5 @@
       </article>
       <a href="https://twitter.com/{{tweet.user.screenName}}/status/{{tweet.id}}"></a>
     </blockquote>
-    <p>{{tweet.id}}</p>
   </div>
 </div>

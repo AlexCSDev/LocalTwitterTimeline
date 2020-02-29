@@ -1,4 +1,4 @@
-﻿article.tweet {
+article.tweet {
   position: relative;
   /*float: left;*/
   border: thin #eeeeee solid;
@@ -38,7 +38,9 @@ img.avatar {
 }
 
 .tweet-container {
-  width:15%;
+  width: 15%;
+  border: 1px solid;
+  margin: 1px;
 }
 
 .twitter-tweet-error {

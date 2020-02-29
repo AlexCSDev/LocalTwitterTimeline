@@ -55,23 +55,25 @@ export class HomeComponent {
 
 interface Tweet {
   id: number,
-  originalId: number,
   createdAt: string,
   user: User,
   text: string,
-  media: Media[]
+  media: Media[],
+  isRetweet: boolean,
+  retweetTweet: Tweet,
+  isQuote: boolean,
+  quotedTweet: Tweet
 }
 
 interface User {
   id: number,
-  originalId: number,
   name: string,
-  screenName: string
+  screenName: string,
+  profileImageUrl: string
 }
 
 interface Media {
   id: number,
-  originalId: number,
   mediaType: MediaType,
   url: string
 }

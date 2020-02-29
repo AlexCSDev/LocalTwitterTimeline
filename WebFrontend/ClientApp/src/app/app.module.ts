@@ -6,11 +6,14 @@ import { RouterModule } from '@angular/router';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ]),
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

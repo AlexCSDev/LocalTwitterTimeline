@@ -23,6 +23,64 @@ namespace WebFrontend.Services
             return ((IDictionary<string, object>)variable).ContainsKey(key);
         }
 
+        private Tweet BuildTweet(dynamic inputTweet)
+        {
+            Tweet tweet = new Tweet();
+            if (DynamicContains(inputTweet, "retweeted_status"))
+            {
+                tweet.RetweetTweet = BuildTweet(inputTweet.retweeted_status);
+            }
+
+            if (DynamicContains(inputTweet, "quoted_status"))
+            {
+                tweet.QuotedTweet = BuildTweet(inputTweet.quoted_status);
+            }
+
+            tweet.Id = inputTweet.id;
+            tweet.CreatedAt = DateTime.ParseExact(inputTweet.created_at,
+                "ddd MMM dd HH:mm:ss +ffff yyyy", new System.Globalization.CultureInfo("en-US"));
+            if (inputTweet.truncated)
+                tweet.Text = inputTweet.extended_tweet.full_text;
+            else
+                tweet.Text = inputTweet.full_text;
+
+            tweet.User = new User
+            {
+                Name = inputTweet.user.name,
+                ScreenName = inputTweet.user.screen_name,
+                ProfileImageUrl = inputTweet.user.profile_image_url
+            };
+
+            if (DynamicContains(inputTweet, "extended_entities") && DynamicContains(inputTweet.extended_entities, "media"))
+            {
+                tweet.Media = new List<Media>(4);
+                foreach (dynamic dbMedia in inputTweet.extended_entities.media)
+                {
+                    Media media = new Media
+                    {
+                        Url = $"{dbMedia.media_url_https}:orig"
+                    };
+
+                    switch (dbMedia.type)
+                    {
+                        case "animated_gif":
+                            media.MediaType = MediaType.AnimatedGIF;
+                            break;
+                        case "video":
+                            media.MediaType = MediaType.Video;
+                            break;
+                        default:
+                            media.MediaType = MediaType.Photo;
+                            break;
+                    }
+
+                    tweet.Media.Add(media);
+                }
+            }
+
+            return tweet;
+        }
+
         public async Task<List<Tweet>> GetFrom(long id)
         {
             var results = await _tweets.Find(new BsonDocument("id", new BsonDocument("$lte", id)))
@@ -33,47 +91,7 @@ namespace WebFrontend.Services
             List<Tweet> tweets = new List<Tweet>(100);
             foreach (dynamic dbTweet in results)
             {
-                Tweet tweet = new Tweet();
-                tweet.Id = dbTweet.id;
-                tweet.CreatedAt = DateTime.ParseExact(dbTweet.created_at,
-                    "ddd MMM dd HH:mm:ss +ffff yyyy", new System.Globalization.CultureInfo("en-US"));
-                if (dbTweet.truncated)
-                    tweet.Text = dbTweet.extended_tweet.full_text;
-                else
-                    tweet.Text = dbTweet.full_text;
-
-                tweet.User = new User
-                {
-                    Name = dbTweet.user.name,
-                    ScreenName = dbTweet.user.screen_name
-                };
-
-                if (DynamicContains(dbTweet, "extended_tweet") && DynamicContains(dbTweet.extended_tweet,"media"))
-                {
-                    tweet.Media = new List<Media>(4);
-                    foreach (dynamic dbMedia in dbTweet.extended_tweet.media)
-                    {
-                        Media media = new Media
-                        {
-                            Url = $"{dbMedia.MediaUrlHttps}:orig"
-                        };
-
-                        switch (dbMedia.type)
-                        {
-                            case "animated_gif":
-                                media.MediaType = MediaType.AnimatedGIF;
-                                break;
-                            case "video":
-                                media.MediaType = MediaType.Video;
-                                break;
-                            default:
-                                media.MediaType = MediaType.Photo;
-                                break;
-                        }
-
-                        tweet.Media.Add(media);
-                    }
-                }
+                Tweet tweet = BuildTweet(dbTweet);
 
                 tweets.Add(tweet);
             }
