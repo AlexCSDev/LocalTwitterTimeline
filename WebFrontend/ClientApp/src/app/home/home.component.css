@@ -4,7 +4,6 @@ article.tweet {
   border: thin #eeeeee solid;
   /*margin: 10px;*/
   /*width: 270px;*/
-  padding: 10px;
   /*height: 220px;*/
   overflow: hidden;
   /*cursor: pointer;*/
@@ -13,6 +12,11 @@ article.tweet {
   border-radius: 5px;
   max-width: 520px;
 }
+
+article.tweet > div.body {
+  padding: 10px;
+}
+
 .name {
   font-weight: bold;
 }
@@ -24,9 +28,9 @@ img.avatar {
   height: 45px;
 }
 .tweet footer {
-  position: absolute;
+ /* position: absolute;
   bottom: 5px;
-  left: 10px;
+  left: 10px;*/
   font-size: smaller;
 }
 .tweet a {
@@ -38,8 +42,8 @@ img.avatar {
 }
 
 .tweet-container {
-  width: 15%;
-  border: 1px solid;
+  width: 20%;
+  /*border: 1px solid;*/
   margin: 1px;
 }
 
@@ -64,8 +68,7 @@ article.tweet > footer {
   border-width: 1px 0 0 0;
   padding: 9px 20px;
   font-size: 12.25px;
-  margin-left: -10px;
-  width:100%;
+  margin-top: 20px;
 }
 
 .twitter-icon-off {
@@ -97,4 +100,18 @@ article.tweet > footer {
   position: absolute;
   color: white;
   background-color: darkblue;
+}
+
+div.info-panel {
+  border: 1px solid #e1e8ed;
+  border-radius: 5px;
+  padding-left: 15px;
+  padding-bottom: 15px;
+}
+
+div.svg-container {
+  width: 16px;
+  display: inline-block;
+  color: rgb(101, 119, 134);
+  fill: rgb(101, 119, 134);
 }

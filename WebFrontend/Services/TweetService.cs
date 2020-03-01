@@ -81,10 +81,10 @@ namespace WebFrontend.Services
             return tweet;
         }
 
-        public async Task<List<Tweet>> GetFrom(long id)
+        public async Task<List<Tweet>> GetFrom(long id, bool sortAsc = false)
         {
-            var results = await _tweets.Find(new BsonDocument("id", new BsonDocument("$lte", id)))
-                .Sort("{id: -1}")
+            var results = await _tweets.Find(new BsonDocument("id", new BsonDocument(sortAsc ? "$gte" : "$lte", id)))
+                .Sort("{id: " + (sortAsc ? "1" : "-1") + "}")
                 .Limit(100)
                 .ToListAsync();
 

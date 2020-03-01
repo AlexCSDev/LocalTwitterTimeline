@@ -26,13 +26,14 @@ namespace WebFrontend.Controllers
         }
         
         // GET
-        [HttpGet("{id?}")]
-        public async Task<IActionResult> Get(long id = -1)
+        [HttpGet("{id?}/{sortType?}")]
+        public async Task<IActionResult> Get(long id = -1, string sortType = "desc")
         {
+            bool sortAsc = sortType.ToLower() == "asc";
             List<Tweet> tweets = null;
             try
             {
-                tweets = await _tweetService.GetFrom(id > 0 ? id : Int64.MaxValue);
+                tweets = await _tweetService.GetFrom(id > 0 ? id : (sortAsc ? Int64.MinValue : Int64.MaxValue), sortAsc);
             }
             catch (Exception ex)
             {
@@ -44,7 +45,12 @@ namespace WebFrontend.Controllers
                 return new JsonResult(new {Code = 404, Message = "No tweets found"});
             }
 
-            long cursor = tweets.Last().Id - 1;
+            long cursor = tweets.Last().Id;
+            if (sortAsc)
+                cursor += 1;
+            else
+                cursor -= 1;
+
             return new JsonResult(new {Code = 200, Message = "OK", Data = tweets, Cursor = cursor});
         }
     }

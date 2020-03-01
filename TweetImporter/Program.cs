@@ -30,6 +30,9 @@ namespace TweetImporter
             IMongoDatabase db = client.GetDatabase("localtwittertimeline");
             var tweets = db.GetCollection<BsonDocument>("tweets");
 
+            /*await tweets.Indexes.CreateOneAsync(new CreateIndexModel<BsonDocument>(new BsonDocument("id", 1), new CreateIndexOptions { Unique = true }));
+            await tweets.Indexes.CreateOneAsync(new CreateIndexModel<BsonDocument>(new BsonDocument("id_str", 1), new CreateIndexOptions { Unique = true }));*/
+
             _logger.Debug("Initializing reading input file");
             var data = await File.ReadAllLinesAsync(args[0]);
 
