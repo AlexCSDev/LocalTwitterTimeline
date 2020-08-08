@@ -14,15 +14,15 @@ article.tweet {
 }
 
 article.tweet > div.body {
-  padding: 10px;
+  padding: 10px 10px 0 10px;
 }
 
 .name {
   font-weight: bold;
 }
 img.avatar {
-  vertical-align: middle;
-  float: left;
+  vertical-align: unset;
+  /*float: left;*/
   margin-right: 10px;
   border-radius: 5px;
   height: 45px;
@@ -39,6 +39,7 @@ img.avatar {
 .tweet .text {
   /*height: 130px;*/
   overflow: auto;
+  display: block;
 }
 
 .tweet-container {
@@ -51,7 +52,7 @@ img.avatar {
   margin:10px 0;
 }
 
-article.tweet > footer {
+article.tweet > footer, div.quoted-tweet > footer {
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -68,7 +69,7 @@ article.tweet > footer {
   border-width: 1px 0 0 0;
   padding: 9px 20px;
   font-size: 12.25px;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .twitter-icon-off {
@@ -114,4 +115,50 @@ div.svg-container {
   display: inline-block;
   color: rgb(101, 119, 134);
   fill: rgb(101, 119, 134);
+  margin-right:5px;
+}
+
+div.retweetContainer {
+  font-size: 8pt;
+  margin-bottom: 10px;
+}
+
+span.username {
+  font-size:8pt;
+}
+
+div.user-info-block {
+
+}
+
+div.user-info-block > div {
+  display: inline-block;
+}
+
+div.user-info-username-block {
+  position: relative;
+  top:-5px;
+}
+
+div.quoted-tweet {
+  border: 1px solid #e1e8ed;
+  border-radius: 5px;
+  margin-top:5px;
+}
+
+div.quoted-tweet > div.text, div.quoted-tweet > div.quote-indicator-container {
+  padding: 5px 10px;
+}
+
+div.tweetId {
+  display:block;
+  text-align: center;
+  position: relative;
+  bottom:1px;
+  margin-top: 10px;
+}
+
+span.tweetId {
+  font-size:8pt;
+  color: gray;
 }

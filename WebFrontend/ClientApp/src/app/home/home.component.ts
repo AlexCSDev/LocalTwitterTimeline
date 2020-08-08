@@ -1,19 +1,20 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, Pipe, PipeTransform} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
-declare var twttr: any;
+import { DomSanitizer } from '@angular/platform-browser';
+import { SafeHtmlPipe } from '../shared/safeHtml.pipe';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [SafeHtmlPipe]
 })
 export class HomeComponent {
-  public tweets: Tweet[] = [];
+  public tweets: TwitterStatus[] = [];
   public cursor = '-1';
   public sortType = 'desc';
-  public MediaType = MediaType;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: ActivatedRoute, private router: Router, private location: Location) {
   }
@@ -26,19 +27,25 @@ export class HomeComponent {
   }
 
   loadData(cursor: string = this.cursor, sortType: string = this.sortType): any {
-    this.http.get<Tweet[]>(this.baseUrl + 'tweets/' + cursor + '/' + sortType).subscribe(result => {
+    this.http.get<TwitterStatus[]>(this.baseUrl + 'tweets/' + cursor + '/' + sortType).subscribe(result => {
       this.tweets = this.tweets.concat(result["data"]);
+      this.tweets.forEach(function(tweet) {
+        if(tweet.originatingStatus == null) {
+          tweet.originatingStatus = tweet; //restore link to self
+        }
+      });
+      console.log(this.tweets);
       this.cursor = result["cursor"];
       /*const url = this
         .router
         .createUrlTree([{ cursor: result["cursor"] }], { relativeTo: this.route })
         .toString();
       this.location.go(url);*/
-      this.location.go('/' + cursor + '/' + sortType);
+      //this.location.go('/' + cursor + '/' + sortType);
 
-      if (twttr != null && twttr.widgets != null) {
+      /*if (twttr != null && twttr.widgets != null) {
         twttr.widgets.load(); // twitter widgets function to load all not loaded widgets
-      }
+      }*/
     }, error => console.error(error));
   }
 
@@ -56,33 +63,118 @@ export class HomeComponent {
   }
 }
 
-interface Tweet {
-  id: number,
-  createdAt: string,
-  user: User,
+interface TwitterStatus {
+  id: string,
+  fullText: string,
   text: string,
-  media: Media[],
+  user: User,
+  createdAt: string,
+  entities: Entities,
+  extendedEntities: Entities,
+  isQuoted: boolean,
+  quotedStatus: TwitterStatus,
+  quoteCount: number,
   isRetweet: boolean,
-  retweetTweet: Tweet,
-  isQuote: boolean,
-  quotedTweet: Tweet
+  retweetedStatus: TwitterStatus,
+  retweetedByMe: boolean,
+  retweetCount: number,
+  favoriteCount: number,
+  favorited: boolean,
+  inReplyToStatusId: string,
+  inReplyToUserId: string,
+  inReplyToScreenName: string,
+  replyCount: number,
+  isSensitive: boolean,
+  relatedLinkInfo: RelatedLinkInfo,
+  originatingStatus: TwitterStatus,
+  statusLink: string,
+  createdDate: Date,
+  isMyTweet: boolean,
+  mentionsMe: boolean,
+  parsedFullText: string
 }
 
-interface User {
-  id: number,
-  name: string,
+//Entities
+interface Entities {
+  urls: UrlEntity[],
+  mentions: MentionEntity[],
+  hashTags: HashTagEntity[],
+  media: Media[]
+}
+
+interface UrlEntity {
+  url: string,
+  displayUrl: string,
+  expandedUrl: string,
+  indices: number[]
+}
+
+interface MentionEntity {
+  id: string,
   screenName: string,
-  profileImageUrl: string
+  name: string,
+  indices: number[]
+}
+
+interface HashTagEntity {
+  text: string,
+  indices: number[]
 }
 
 interface Media {
-  id: number,
-  mediaType: MediaType,
+  url: string,
+  displayUrl: string,
+  expandedUrl: string,
+  mediaUrl: string,
+  indices: number[],
+  videoInfo: VideoInfo
+}
+
+interface VideoInfo {
+  variants: Variant[]
+}
+
+interface Variant {
   url: string
 }
 
-enum MediaType {
-  Photo = 0,
-  Video = 1,
-  GIF = 2
+//User
+interface User {
+  id: string,
+  name: string,
+  screenName: string,
+  profileImageUrl: string,
+  profileBannerUrl: string,
+  description: string,
+  verified: boolean,
+  location: string,
+  url: string,
+  tweets: number,
+  friends: number,
+  followers: number,
+  entities: UserObjectEntities,
+  createdAt: string,
+  isFollowing: boolean,
+  isFollowedBy: boolean,
+  memberSince: string,
+  profileImageUrlBigger: string,
+  profileImageUrlOriginal: string
+}
+
+interface UserObjectEntities {
+  url: UserObjectUrls
+}
+
+interface UserObjectUrls {
+  urls: UrlEntity
+}
+
+//RelatedLinkInfo
+interface RelatedLinkInfo {
+  url: string,
+  title: string,
+  imageUrl: string,
+  description: string,
+  siteName: string,
+  imageTwitterStatus: TwitterStatus
 }
