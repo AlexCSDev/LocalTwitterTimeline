@@ -2,7 +2,6 @@ import {Component, Inject, Pipe, PipeTransform} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
 import { SafeHtmlPipe } from '../shared/safeHtml.pipe';
 
 @Component({
@@ -34,18 +33,8 @@ export class HomeComponent {
           tweet.originatingStatus = tweet; //restore link to self
         }
       });
-      console.log(this.tweets);
-      this.cursor = result["cursor"];
-      /*const url = this
-        .router
-        .createUrlTree([{ cursor: result["cursor"] }], { relativeTo: this.route })
-        .toString();
-      this.location.go(url);*/
-      //this.location.go('/' + cursor + '/' + sortType);
 
-      /*if (twttr != null && twttr.widgets != null) {
-        twttr.widgets.load(); // twitter widgets function to load all not loaded widgets
-      }*/
+      this.cursor = result["cursor"];
     }, error => console.error(error));
   }
 

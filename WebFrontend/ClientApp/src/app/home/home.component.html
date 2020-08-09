@@ -1,15 +1,5 @@
 <div style="display:flex; justify-content:space-evenly; flex-wrap:wrap;" *ngIf="tweets">
   <div class="tweet-container" *ngFor="let tweet of tweets">
-    <!--<div class="info-panel">
-      <button type="button" class="btn btn-link" (click)="this['isCollapsed_'+tweet.id] = !this['isCollapsed_'+tweet.id]">Toggle info</button>
-      <div [ngbCollapse]="!this['isCollapsed_'+tweet.id]">
-        <p>{{tweet.id}}</p>
-        <p>{{tweet.user.name}} ({{tweet.user.screenName}}) | {{tweet.text}}</p>
-      </div>
-      <div>
-        <a href="https://twitter.com/{{tweet.user.screenName}}/status/{{tweet.id}}">Open tweet</a>
-      </div>
-    </div>-->
     <blockquote class="twitter-tweet">
       <article class="tweet">
         <div class="body">
@@ -38,7 +28,6 @@
               <div style="display: inline;" *ngFor="let media of tweet.originatingStatus.extendedEntities.media">
                 <br/>
                 <a href="{{media.mediaUrl}}">
-                  <!--<div class="embedimg_typediv">{{MediaType[media.mediaType]}}</div>-->
                   <div class="embedimg_typediv" *ngIf="media.videoInfo === null">Image</div>
                   <div class="embedimg_typediv" *ngIf="media.videoInfo !== null">Video</div>
                   <img class="embedimg_image" src="{{media.mediaUrl}}"/>
@@ -72,7 +61,6 @@
                 <div style="display: inline;" *ngFor="let media of tweet.quotedStatus.extendedEntities.media">
                   <br/>
                   <a href="{{media.mediaUrl}}">
-                    <!--<div class="embedimg_typediv">{{MediaType[media.mediaType]}}</div>-->
                     <div class="embedimg_typediv" *ngIf="media.videoInfo === null">Image</div>
                     <div class="embedimg_typediv" *ngIf="media.videoInfo !== null">Video</div>
                     <img class="embedimg_image" src="{{media.mediaUrl}}"/>
@@ -94,7 +82,6 @@
     </blockquote>
   </div>
 </div>
-<div style="position: sticky; left: 93%; bottom: 5%; z-index: 9999;">
-  <a type="button" class="btn btn-primary" style="position: sticky; left: 93%; bottom: 5%; z-index: 9999;" href="{{cursor}}/{{sortType}}">Next page >></a>
-  <a type="button" class="btn btn-primary" style="position: sticky; left: 93%; bottom: 5%; z-index: 9999;" href="{{cursor}}/{{sortType}}">Next page >></a>
+<div class="next-page-btn-container">
+  <a type="button" class="btn btn-primary" style="position: sticky; left: 93%; bottom: 5%; z-index: 9999;" [routerLink]="['/', cursor, sortType]">Next page >></a>
 </div>

@@ -53,34 +53,5 @@ namespace WebFrontend.Controllers
 
             return new JsonResult(new {Code = 200, Message = "OK", Data = tweets, Cursor = cursor});
         }
-
-        // GET
-        [HttpGet("dynamic/{id?}/{sortType?}")]
-        public async Task<IActionResult> GetDynamic(long id = -1, string sortType = "desc")
-        {
-            bool sortAsc = sortType.ToLower() == "asc";
-            List<dynamic> tweets = null;
-            try
-            {
-                tweets = await _tweetService.GetFromDynamic(id > 0 ? id : (sortAsc ? Int64.MinValue : Int64.MaxValue), sortAsc);
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(new { Code = 503, Message = "Exception has occured", Data = ex });
-            }
-
-            if (tweets.Count == 0)
-            {
-                return new JsonResult(new { Code = 404, Message = "No tweets found" });
-            }
-
-            long cursor = tweets.Last().id;
-            if (sortAsc)
-                cursor += 1;
-            else
-                cursor -= 1;
-
-            return new JsonResult(new { Code = 200, Message = "OK", Data = tweets, Cursor = cursor });
-        }
     }
 }

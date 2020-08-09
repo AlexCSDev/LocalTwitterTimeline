@@ -11,8 +11,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { SafeHtmlPipe } from './shared/safeHtml.pipe';
 
 
@@ -21,8 +19,6 @@ import { SafeHtmlPipe } from './shared/safeHtml.pipe';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     SafeHtmlPipe
   ],
   imports: [
@@ -32,9 +28,7 @@ import { SafeHtmlPipe } from './shared/safeHtml.pipe';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: ':cursor', component: HomeComponent },
-      { path: ':cursor/:sort', component: HomeComponent },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
+      { path: ':cursor/:sort', component: HomeComponent }
     ]),
     InfiniteScrollModule,
     NgbModule
