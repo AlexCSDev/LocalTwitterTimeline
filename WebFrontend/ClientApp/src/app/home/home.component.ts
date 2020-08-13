@@ -11,10 +11,10 @@ import { SafeHtmlPipe } from '../shared/safeHtml.pipe';
   providers: [SafeHtmlPipe]
 })
 export class HomeComponent {
-  private tweets: TwitterStatus[] = [];
-  private cursor = '-1'; // used by next page button
-  private sortType = 'desc'; // used by next page button
-  private isLoading = false;
+  public tweets: TwitterStatus[] = [];
+  public cursor = '-1'; // used by next page button
+  public sortType = 'desc'; // used by next page button
+  public isLoading = false;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: ActivatedRoute, private router: Router, private location: Location) {
     router.events.subscribe((val) => {
