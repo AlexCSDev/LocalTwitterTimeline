@@ -169,3 +169,7 @@ div.next-page-btn-container {
   bottom: 5%;
   z-index: 9999;
 }
+
+div.loading {
+  margin: 0 10px;
+}

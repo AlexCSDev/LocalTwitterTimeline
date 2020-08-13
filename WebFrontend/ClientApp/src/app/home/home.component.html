@@ -1,4 +1,5 @@
-<div style="display:flex; justify-content:space-evenly; flex-wrap:wrap;" *ngIf="tweets">
+<div *ngIf="isLoading" class="loading"><ngb-progressbar type="info" [value]="100" [striped]="true" [animated]="true"><i>Loading...</i></ngb-progressbar></div>
+<div style="display:flex; justify-content:space-evenly; flex-wrap:wrap;" *ngIf="!isLoading">
   <div class="tweet-container" *ngFor="let tweet of tweets">
     <blockquote class="twitter-tweet">
       <article class="tweet">
@@ -82,6 +83,6 @@
     </blockquote>
   </div>
 </div>
-<div class="next-page-btn-container">
+<div class="next-page-btn-container" *ngIf="!isLoading">
   <a type="button" class="btn btn-primary" [routerLink]="['/', cursor, sortType]">Next page >></a>
 </div>

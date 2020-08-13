@@ -27,7 +27,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="ClientApp\src\app\shared\interfaces.ts" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\TweetDatabase\TweetDatabase.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <TypeScriptCompile Include="ClientApp\src\app\shared\interfaces.ts" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
