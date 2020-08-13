@@ -34,17 +34,19 @@ namespace WebFrontend.Services
             List<TwitterStatus> tweets = new List<TwitterStatus>(count);
             foreach (dynamic dbTweet in results)
             {
-                //Parse tweet
-                TwitterStatus tweet = await JsonSerializer.DeserializeAsync<TwitterStatus>(new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dbTweet)))).ConfigureAwait(false);
+                using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dbTweet))))
+                {
+                    TwitterStatus tweet = await JsonSerializer.DeserializeAsync<TwitterStatus>(ms).ConfigureAwait(false);
 
-                //Fill parsed text variables
-                tweet.ParsedFullText = TweetTextParser.ParseTweetText(tweet);
-                if(tweet.OriginatingStatus != null)
-                    tweet.OriginatingStatus.ParsedFullText = TweetTextParser.ParseTweetText(tweet.OriginatingStatus);
-                if(tweet.QuotedStatus != null)
-                    tweet.QuotedStatus.ParsedFullText = TweetTextParser.ParseTweetText(tweet.QuotedStatus);
+                    //Fill parsed text variables
+                    tweet.ParsedFullText = TweetTextParser.ParseTweetText(tweet);
+                    if (tweet.OriginatingStatus != null)
+                        tweet.OriginatingStatus.ParsedFullText = TweetTextParser.ParseTweetText(tweet.OriginatingStatus);
+                    if (tweet.QuotedStatus != null)
+                        tweet.QuotedStatus.ParsedFullText = TweetTextParser.ParseTweetText(tweet.QuotedStatus);
 
-                tweets.Add(tweet);
+                    tweets.Add(tweet);
+                }
             }
 
             return tweets;

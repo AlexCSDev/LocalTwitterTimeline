@@ -11,7 +11,6 @@ namespace TweetDatabase.Models
     public class TwitterStatus
     {
         private DateTime _createdDate;
-        private RelatedLinkInfo? _relatedLinkInfo;
 
         [JsonPropertyName("id_str")]
         public string Id { get; set; } = string.Empty;
@@ -76,37 +75,6 @@ namespace TweetDatabase.Models
 
         [JsonIgnore]
         public string? OverrideLink { get; set; }
-
-        [JsonIgnore] 
-        public bool CheckedRelatedInfo { get; set; }
-
-        [JsonIgnore]
-        public RelatedLinkInfo? RelatedLinkInfo
-        {
-            get
-            {
-                if (CheckedRelatedInfo) return _relatedLinkInfo;
-                CheckedRelatedInfo = true;
-                GetRelatedInfoAsync().ConfigureAwait(false); // fire and forget
-                return _relatedLinkInfo;
-            }
-            set
-            {
-                _relatedLinkInfo = value;
-            }
-        }
-
-        private async ValueTask GetRelatedInfoAsync()
-        {
-            try
-            {
-                RelatedLinkInfo = await RelatedLinkInfo.GetRelatedLinkInfoAsync(this).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                //do nothing
-            }
-        }
 
         /// <summary>
         /// Originating status is what get's displayed

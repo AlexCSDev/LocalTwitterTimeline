@@ -51,7 +51,7 @@ namespace WebFrontend.Controllers
             else
                 cursor -= 1;
 
-            return new JsonResult(new {Code = 200, Message = "OK", Data = tweets, Cursor = cursor});
+            return Ok(new { Code = 200, Message = "OK", Data = tweets, Cursor = cursor });
         }
     }
 }

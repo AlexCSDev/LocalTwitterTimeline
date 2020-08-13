@@ -20,7 +20,6 @@ interface TwitterStatus {
   inReplyToScreenName: string,
   replyCount: number,
   isSensitive: boolean,
-  relatedLinkInfo: RelatedLinkInfo,
   originatingStatus: TwitterStatus,
   statusLink: string,
   createdDate: Date,
@@ -102,14 +101,4 @@ interface UserObjectEntities {
 
 interface UserObjectUrls {
   urls: UrlEntity
-}
-
-//RelatedLinkInfo
-interface RelatedLinkInfo {
-  url: string,
-  title: string,
-  imageUrl: string,
-  description: string,
-  siteName: string,
-  imageTwitterStatus: TwitterStatus
 }
