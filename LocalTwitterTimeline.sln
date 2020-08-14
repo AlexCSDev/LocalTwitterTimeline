@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TweetImporter", "TweetImpor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TweetDatabase", "TweetDatabase\TweetDatabase.csproj", "{C8900855-325D-482F-B071-9028D8DED033}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFrontend", "WebFrontend\WebFrontend.csproj", "{1D57D0E1-B662-46C1-A6E3-64277F678815}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{C8900855-325D-482F-B071-9028D8DED033}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8900855-325D-482F-B071-9028D8DED033}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8900855-325D-482F-B071-9028D8DED033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D57D0E1-B662-46C1-A6E3-64277F678815}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D57D0E1-B662-46C1-A6E3-64277F678815}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D57D0E1-B662-46C1-A6E3-64277F678815}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D57D0E1-B662-46C1-A6E3-64277F678815}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

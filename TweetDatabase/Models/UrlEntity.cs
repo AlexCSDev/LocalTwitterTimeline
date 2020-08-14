@@ -1,8 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TweetDatabase.Models
 {
-    public class Media
+    public class UrlEntity
     {
         [JsonPropertyName("url")]
         public string Url { get; set; }
@@ -13,13 +16,7 @@ namespace TweetDatabase.Models
         [JsonPropertyName("expanded_url")]
         public string ExpandedUrl { get; set; }
 
-        [JsonPropertyName("media_url")]
-        public string MediaUrl { get; set; }
-
         [JsonPropertyName("indices")]
         public int[] Indices { get; set; }
-
-        [JsonPropertyName("video_info")]
-        public VideoInfo? VideoInfo { get; set; }
     }
 }
