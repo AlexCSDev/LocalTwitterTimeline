@@ -1,0 +1,7 @@
+1) Install python 3
+2) Install and configure twarc
+3) Place archivenow.sh and wall.py into /opt/twarc and do chmod +x on them
+4) create /opt/twarc/html directory
+5) Add to cron:
+*/30 * * * * /opt/twarc/archivenow.sh >/dev/null 2>&1
+6) [Windows] Place generatedb.bat into the same folder as TweetImporter binaries, place json dumps into "import" subfolder and start generatedb.bat. Make sure that mongodb is running on 127.0.0.1:27017.

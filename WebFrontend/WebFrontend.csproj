@@ -15,6 +15,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
+        <PackageReference Include="MongoDB.Driver" Version="2.11.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -26,7 +27,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="ClientApp\src\app\shared\interfaces.ts" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\TweetDatabase\TweetDatabase.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <TypeScriptCompile Include="ClientApp\src\app\shared\interfaces.ts" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

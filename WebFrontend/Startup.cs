@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using TweetDatabase;
 using WebFrontend.Helpers;
+using WebFrontend.Services;
 
 namespace WebFrontend
 {
@@ -31,8 +32,8 @@ namespace WebFrontend
                     });
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
-            
-            services.AddDbContext<TweetDbContext>();
+
+            services.AddTransient<TweetService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

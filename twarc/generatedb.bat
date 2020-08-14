@@ -1,0 +1,1 @@
+for /f %%f in ('dir /o:d /b import') do TweetImporter.exe import\%%f

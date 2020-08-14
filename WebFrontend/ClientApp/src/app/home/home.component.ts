@@ -1,83 +1,54 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, Pipe, PipeTransform} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { Location } from '@angular/common';
-declare var twttr: any;
+import { SafeHtmlPipe } from '../shared/safeHtml.pipe';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [SafeHtmlPipe]
 })
 export class HomeComponent {
-  public tweets: Tweet[] = [];
-  public cursor = "-1";
-  public MediaType = MediaType;
+  public tweets: TwitterStatus[] = [];
+  public cursor = '-1'; // used by next page button
+  public sortType = 'desc'; // used by next page button
+  public isLoading = false;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private route: ActivatedRoute, private router: Router, private location: Location) {
+    router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        this.loadData();
+      }
+    });
   }
 
   ngOnInit() {
-    const cursor = this.route.snapshot.paramMap.get("cursor");
-    this.loadData(parseInt(cursor) > 0 ? cursor : "-1");
+    this.loadData();
   }
 
-  loadData(cursor: string = this.cursor): any {
-    this.http.get<Tweet[]>(this.baseUrl + 'tweets/' + cursor).subscribe(result => {
-      this.tweets = this.tweets.concat(result["data"]);
-      this.cursor = result["cursor"];
-      /*const url = this
-        .router
-        .createUrlTree([{ cursor: result["cursor"] }], { relativeTo: this.route })
-        .toString();
-      this.location.go(url);*/
-      this.location.go('/' + cursor);
+  loadData(): any {
+    this.isLoading = true;
+    window.scroll(0, 0);
+    this.tweets = [];
 
-      if (twttr != null && twttr.widgets != null) {
-        twttr.widgets.load(); // twitter widgets function to load all not loaded widgets
-      }
+    let cursorParam = this.route.snapshot.paramMap.get('cursor');
+    let cursor = parseInt(cursorParam) > 0 ? cursorParam : '-1';
+    let sortType = this.route.snapshot.paramMap.get('sort') != null ? this.route.snapshot.paramMap.get('sort') : 'desc';
+
+    this.http.get<TwitterStatus[]>(this.baseUrl + 'tweets/' + cursor + '/' + sortType).subscribe(result => {
+      this.tweets = result["data"];
+
+      this.tweets.forEach(function(tweet) {
+        if(tweet.originatingStatus == null) {
+          tweet.originatingStatus = tweet; //restore link to self
+        }
+      });
+
+      this.cursor = result["cursor"];
+      this.sortType = sortType;
+      this.isLoading = false;
     }, error => console.error(error));
   }
-
-  onScrollDown() {
-    if (/*this.pagination.cursor !== -1*/true) { //TODO: IT RETURNS 404 if there are nothing left
-      this.loadData();
-    } else {
-      console.log('no results');
-    }
-    console.log('scrolled down');
-  }
-
-  onScrollUp() {
-    console.log('scrolled up');
-  }
-}
-
-interface Tweet {
-  id: number,
-  originalId: number,
-  createdAt: string,
-  user: User,
-  text: string,
-  media: Media[]
-}
-
-interface User {
-  id: number,
-  originalId: number,
-  name: string,
-  screenName: string
-}
-
-interface Media {
-  id: number,
-  originalId: number,
-  mediaType: MediaType,
-  url: string
-}
-
-enum MediaType {
-  Photo = 0,
-  Video = 1,
-  GIF = 2
 }
