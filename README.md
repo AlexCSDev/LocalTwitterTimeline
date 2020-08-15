@@ -14,6 +14,6 @@ This application uses twitter's api data (obtained using external tool like [twa
 ## License
 All files in this repository are licensed under the license listed in LICENSE.md file unless stated otherwise.
 
-## Acknowlegments
+## Acknowledgments
 This project uses some code from the following projects:
-* [Tweetz](https://github.com/mike-ward/tweetz) - Classes for binding twitter objects into .NET objects
+* [Tweetz](https://github.com/mike-ward/tweetz) - Classes for binding twitter json into .NET objects
